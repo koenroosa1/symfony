@@ -36,6 +36,11 @@ class Book
      */
     private $price;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Author")
+     */
+    private $author;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,5 +92,15 @@ class Book
         $this->price = $price;
 
         return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(Author $author): void
+    {
+        $this->author = $author;
     }
 }

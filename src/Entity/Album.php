@@ -9,7 +9,16 @@
 namespace App\Entity;
 
 
-class Album
-{
+class Album{
+    private $album;
 
+
+    public function __construct($albums)
+    {
+        $this->album = $albums;
+    }
+
+    public function Retun(){
+        echo $this->album;
+    }
 }

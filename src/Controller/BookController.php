@@ -17,6 +17,9 @@ class BookController extends AbstractController
 {
     /**
      * @Route("/", name="book_index", methods="GET")
+     * @param BookRepository $bookRepository
+     *
+     * @return Response
      */
     public function index(BookRepository $bookRepository): Response
     {
@@ -25,6 +28,9 @@ class BookController extends AbstractController
 
     /**
      * @Route("/new", name="book_new", methods="GET|POST")
+     * @param Request $request
+     *
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -47,7 +53,26 @@ class BookController extends AbstractController
     }
 
     /**
+     * @Route("/total", name="book_total", methods="GET")
+     * @param BookRepository $bookRepository
+     *
+     * @return Response
+     */
+    public function total(BookRepository $bookRepository)
+    {
+        $books = $bookRepository->findAll();
+        $total = 0;
+        foreach ($books as $book) {
+            $total += $book->getPrice();
+        }
+        return $this->render('book/total.html.twig', ['total' => $total]);
+    }
+
+    /**
      * @Route("/{id}", name="book_show", methods="GET")
+     * @param Book $book
+     *
+     * @return Response
      */
     public function show(Book $book): Response
     {
@@ -56,6 +81,10 @@ class BookController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="book_edit", methods="GET|POST")
+     * @param Request $request
+     * @param Book    $book
+     *
+     * @return Response
      */
     public function edit(Request $request, Book $book): Response
     {
@@ -76,6 +105,10 @@ class BookController extends AbstractController
 
     /**
      * @Route("/{id}", name="book_delete", methods="DELETE")
+     * @param Request $request
+     * @param Book    $book
+     *
+     * @return Response
      */
     public function delete(Request $request, Book $book): Response
     {
@@ -86,5 +119,17 @@ class BookController extends AbstractController
         }
 
         return $this->redirectToRoute('book_index');
+    }
+
+    /**
+     * @Route("/filter/{genre}", name="book_filter", methods="GET")
+     * @param string         $genre
+     * @param BookRepository $bookRepository
+     *
+     * @return Response
+     */
+    public function filter(string $genre, BookRepository $bookRepository): Response
+    {
+        return $this->render('book/index.html.twig', ['books' => $bookRepository->findAllByGenre($genre)]);
     }
 }

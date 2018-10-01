@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+    {% for i in 1..Number %}
+        {% if i % 12 == 0 %}
+        {{ i }} Bazinga!
+        {% elseif i % 3 == 0 %}
+            {{ i }} Foo!
+            {% elseif i % 4 == 0 %}
+            {{ i }} Bar!
+        {% endif %}
+    {% endfor %}
+{% endblock %}

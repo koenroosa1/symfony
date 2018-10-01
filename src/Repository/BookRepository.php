@@ -18,4 +18,23 @@ class BookRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Book::class);
     }
+
+    public function findAllByGenre(string $genre): array
+    {
+        return $this->findBy(['genre' => $genre]);
+    }
+
+    public function findByAuthor(string $name): array
+    {
+        $queryBuilder = $this->createQueryBuilder('book');
+
+        return $queryBuilder
+            ->select('book, author')
+            ->join('book.author', 'author')
+            ->where('author.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
